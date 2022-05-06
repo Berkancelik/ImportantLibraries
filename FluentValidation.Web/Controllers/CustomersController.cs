@@ -53,7 +53,7 @@ namespace FluentValidation.Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Mail,Age")] Customer customer)
+        public async Task<IActionResult> Create([Bind("Name,Mail,Age,BirthDay")] Customer customer)
         {
             if (ModelState.IsValid)
             {
