@@ -28,6 +28,7 @@ namespace FluentValidation.Web.FluentValidators
             {
                 return DateTime.Now.AddYears(-18)>=x;
             }).WithMessage("Yaşınız 18 Yaşından Büyük Olmalıdır");
+            RuleFor(x=>x.Gender).IsInEnum().WithMessage("{PropertyName} alanı Erkek=1, Kadın = 2 olmalıdır.")
 
             RuleForEach(x => x.Addresses).SetValidator(new AddressValidator());
 
