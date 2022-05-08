@@ -1,7 +1,7 @@
-﻿using FluentValidation.Web.Models;
+﻿using FluentValidation.Web2.Models;
 using System;
 
-namespace FluentValidation.Web.FluentValidators
+namespace FluentValidation.Web2.FluentValidator
 {
     public class CustomerValidator : AbstractValidator<Customer>
     {
@@ -26,10 +26,8 @@ namespace FluentValidation.Web.FluentValidators
 
             RuleFor(x => x.BirthDay).NotEmpty().Must(x =>
             {
-                return DateTime.Now.AddYears(-18)>=x;
+                return DateTime.Now.AddYears(-18) >= x;
             }).WithMessage("Yaşınız 18 Yaşından Büyük Olmalıdır");
-
-            RuleForEach(x => x.Addresses).SetValidator(new AddressValidator());
 
         }
     }

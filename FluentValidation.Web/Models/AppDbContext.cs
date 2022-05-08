@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 
 namespace FluentValidation.Web.Models
 {
@@ -7,6 +8,7 @@ namespace FluentValidation.Web.Models
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
         public DbSet<Customer> Customers { get; set; }
+        public IList<Address> Addresses { get; set; }
     }
 
 }

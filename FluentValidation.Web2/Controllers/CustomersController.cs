@@ -2,25 +2,21 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using FluentValidation.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using FluentValidation.Web2.Models;
 
-namespace FluentValidation.Web.Controllers
+namespace FluentValidation.Web2.Controllers
 {
     public class CustomersController : Controller
     {
         private readonly AppDbContext _context;
-        private readonly IValidator<Customer> _customerValidation;
 
-        public CustomersController(AppDbContext context, IValidator<Customer> customerValidation)
+        public CustomersController(AppDbContext context)
         {
             _context = context;
-            _customerValidation = customerValidation;
         }
-
-
 
         // GET: Customers
         public async Task<IActionResult> Index()
@@ -57,16 +53,14 @@ namespace FluentValidation.Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Name,Mail,Age,BirthDay")] Customer customer)
+        public async Task<IActionResult> Create([Bind("Id,Name,Mail,Age,BirthDay")] Customer customer)
         {
-            var result = _customerValidation.Validate(customer);
-            if (result.IsValid)
+            if (ModelState.IsValid)
             {
                 _context.Add(customer);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-
             return View(customer);
         }
 
@@ -91,7 +85,7 @@ namespace FluentValidation.Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Mail,Age")] Customer customer)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Mail,Age,BirthDay")] Customer customer)
         {
             if (id != customer.Id)
             {
