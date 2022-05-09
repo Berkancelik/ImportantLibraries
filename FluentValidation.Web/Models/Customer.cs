@@ -13,5 +13,10 @@ namespace FluentValidation.Web.Models
         public IList<Address> Addresses { get; set; }
         public Gender Gender { get; set; }
 
+        public string FullName2()
+        {
+            return $"{Name}-{Mail}-{Age}";
+        }
+
     }
 }
