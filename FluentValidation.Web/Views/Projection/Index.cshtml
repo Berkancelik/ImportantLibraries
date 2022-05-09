@@ -1,0 +1,13 @@
+﻿@model FluentValidation.Web.DTOs.EvetDateDto
+@{
+    ViewData["Title"] = "Index";
+}
+
+<form asp-action="Index">
+    <input asp-for="Day" />
+    <input asp-for="Month" />
+    <input asp-for="Year" />
+    <input type="submit" value="Kaydet" />
+</form>
+
+<h1> @ViewBag.date</h1>
