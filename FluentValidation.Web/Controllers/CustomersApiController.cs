@@ -31,7 +31,18 @@ namespace FluentValidation.Web.Controllers
         [HttpGet]
         public IActionResult MappingExample()
         {
-            Customer customer = new Customer { Id = 1,Name="Berkan", Mail="berkna@gmail.com",Age=23 };
+            Customer customer = new Customer
+            {
+                Id = 1,
+                Name = "Berkan",
+                Mail = "berkna@gmail.com",
+                Age = 23,
+                CreditCard = new CreditCard
+                {
+                    Number = "1234",
+                    ValidDate = DateTime.Now
+                }
+            };
             return Ok(_mapper.Map<CustomerDto>(customer));
         }
 
