@@ -30,7 +30,8 @@ namespace RateLimit.API
             services.AddSwaggerGen();
             services.AddOptions();
             services.AddMemoryCache();
-            services.Configure<IpRateLimitOptions>(Configuration.GetSection("IpRateLimiting"));     
+            services.Configure<IpRateLimitOptions>(Configuration.GetSection("IpRateLimiting")); 
+            // Aþaðýdaki Key içeriisnde Ip bazlý kurallarýmýzý tanýmlayabiliriz Key("IpRateLimitPolicies")
             services.Configure<IpRateLimitPolicies>(Configuration.GetSection("IpRateLimitPolicies"));       
             services.AddSingleton<IIpPolicyStore, MemoryCacheIpPolicyStore>();
             services.AddSingleton<IRateLimitCounterStore,MemoryCacheRateLimitCounterStore>();
