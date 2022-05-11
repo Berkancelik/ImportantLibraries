@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using FluentValidation.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 
 namespace FluentValidation.Web.Controllers
@@ -20,8 +21,7 @@ namespace FluentValidation.Web.Controllers
             _customerValidation = customerValidation;
         }
 
-
-
+      
         // GET: Customers
         public async Task<IActionResult> Index()
         {

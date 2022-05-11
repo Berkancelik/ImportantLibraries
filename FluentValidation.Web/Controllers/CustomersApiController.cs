@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using FluentValidation.Web.Models;
+using AutoMapper;
+using FluentValidation.Web.DTOs;
 
 namespace FluentValidation.Web.Controllers
 {
@@ -15,18 +17,43 @@ namespace FluentValidation.Web.Controllers
     {
         private readonly AppDbContext _context;
         private readonly IValidator<Customer> _customerValidator;
+        private readonly IMapper _mapper;
 
-        public CustomersApiController(AppDbContext context,IValidator<Customer> customerValidator)
+        public CustomersApiController(AppDbContext context, IValidator<Customer> customerValidator, IMapper mapper)
         {
             _context = context;
             _customerValidator = customerValidator;
+            _mapper = mapper;
         }
+
+
+        [Route("MappingExample")]
+        [HttpGet]
+        public IActionResult MappingExample()
+        {
+            Customer customer = new Customer
+            {
+                Id = 1,
+                Name = "Berkan",
+                Mail = "berkna@gmail.com",
+                Age = 23,
+                CreditCard = new CreditCard
+                {
+                    Number = "1234",
+                    ValidDate = DateTime.Now
+                }
+            };
+            return Ok(_mapper.Map<CustomerDto>(customer));
+        }
+
+
 
         // GET: api/CustomersApi
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Customer>>> GetCustomers()
+        public async Task<ActionResult<List<CustomerDto>>> GetCustomers()
         {
-            return await _context.Customers.ToListAsync();
+            List<Customer> customers = await _context.Customers.ToListAsync();
+            return _mapper.Map<List<CustomerDto>>(customers);
         }
 
         // GET: api/CustomersApi/5
@@ -82,7 +109,7 @@ namespace FluentValidation.Web.Controllers
             var result = _customerValidator.Validate(customer);
             if (result.IsValid)
             {
-                return BadRequest(result.Errors.Select(x=> new {property=x.PropertyName, error = x.ErrorMessage}));
+                return BadRequest(result.Errors.Select(x => new { property = x.PropertyName, error = x.ErrorMessage }));
             }
 
             _context.Customers.Add(customer);
