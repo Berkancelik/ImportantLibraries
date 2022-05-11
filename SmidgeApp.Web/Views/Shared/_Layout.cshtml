@@ -42,7 +42,15 @@
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="my-js-bundle" ></script>
+
+    @*Eğer names a Development olarak belirttiğimizde tag lar içierisindeki devug="true"* olarak verdiğimizde
+        herhangi bir bundle işlemi gerçekleşmeyecektir. Eğer orrtam named i names="Production" ortamında ise bundle etsin 
+        ama bundle ederken debug true olarak belirtmez isek  bundle işlemi gereçekleşecektir.
+
+        NOT: Default olarak development olarak çalışmaktadır.
+    *@
+    <script src="my-js-bundle" debug="true" ></script>
+    <environment names="Development"></environment>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
