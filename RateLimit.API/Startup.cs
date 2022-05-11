@@ -30,10 +30,13 @@ namespace RateLimit.API
             services.AddSwaggerGen();
             services.AddOptions();
             services.AddMemoryCache();
-            services.Configure<IpRateLimitOptions>(Configuration.GetSection("IpRateLimiting")); 
-            // Aþaðýdaki Key içeriisnde Ip bazlý kurallarýmýzý tanýmlayabiliriz Key("IpRateLimitPolicies")
-            services.Configure<IpRateLimitPolicies>(Configuration.GetSection("IpRateLimitPolicies"));       
-            services.AddSingleton<IIpPolicyStore, MemoryCacheIpPolicyStore>();
+
+            // 
+            services.Configure<ClientRateLimitOptions>(Configuration.GetSection("ClientRateLimiting")); 
+            services.Configure<ClientRateLimitPolicies>(Configuration.GetSection("ClientRateLimitPolicies"));           
+            services.AddSingleton<IClientPolicyStore, MemoryCacheClientPolicyStore>();
+            //
+
             services.AddSingleton<IRateLimitCounterStore,MemoryCacheRateLimitCounterStore>();
             services.AddSingleton<IHttpContextAccessor,HttpContextAccessor>();
             services.AddSingleton<IRateLimitConfiguration,RateLimitConfiguration>();
@@ -49,8 +52,10 @@ namespace RateLimit.API
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "RateLimit.API v1"));
             }
-            app.UseIpRateLimiting();
+            app.UseClientRateLimiting();
+
             app.UseHttpsRedirection();
+
             app.UseRouting();
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>

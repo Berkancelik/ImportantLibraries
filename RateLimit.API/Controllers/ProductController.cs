@@ -23,5 +23,13 @@ namespace RateLimit.API.Controllers
         {
             return Ok();
         }
+
+        // bu alan belirtilmez ise herhangi bir url de name alanını alamyız, yani içindeki parametre
+        //GET: : : api/product/kalem/20
+        [HttpGet("{name}/{price}")]
+        public IActionResult GetProdcut(string name,int price)
+        {
+            return Ok(name);
+        }
     }
 }
