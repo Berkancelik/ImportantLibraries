@@ -3,6 +3,6 @@
 
 // Write your JavaScript code.
 
-function topla(a, b) {
-    return a + b;
+function carp(a, b) {
+    return a * b;
 }

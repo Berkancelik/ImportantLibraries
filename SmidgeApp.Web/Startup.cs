@@ -8,7 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
+using Smidge;
 namespace SmidgeApp.Web
 {
     public class Startup
@@ -23,7 +23,9 @@ namespace SmidgeApp.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSmidge(Configuration.GetSection("smidge"));
             services.AddControllersWithViews();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -45,6 +47,11 @@ namespace SmidgeApp.Web
             app.UseRouting();
 
             app.UseAuthorization();
+            app.UseSmidge(bundle =>
+            {
+                //istediðimiz kadar path belirtebiliriz.
+                bundle.CreateJs("my-js-bundle","~/js/site.js", "~/js/site2.js");
+            });
 
             app.UseEndpoints(endpoints =>
             {
