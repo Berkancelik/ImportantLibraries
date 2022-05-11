@@ -9,6 +9,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Smidge;
+using Smidge.Options;
+using Smidge.Cache;
+
 namespace SmidgeApp.Web
 {
     public class Startup
@@ -49,8 +52,15 @@ namespace SmidgeApp.Web
             app.UseAuthorization();
             app.UseSmidge(bundle =>
             {
-                //istediðimiz kadar path belirtebiliriz.
-                bundle.CreateJs("my-js-bundle","~/js/site.js", "~/js/site2.js");
+                // forDebug demek; debug tarafýnda true olur se iþlem yapacaðým, Eðer belirtlimez ise forPRoduction olmaktadýr.
+                // birleþtirme iþlemi Enable... ile gerçekleþmektedir.
+                // EnableFileWatcher: Bizim Bundle içeriisnde belirttiðimiz dosyalarý izleyip bir deðiþiklik olduðunda ise sýfýrdan oluþtur 
+                // anlamýna gelmektedir.
+                // ne zaman oluþacaðýný ise SetCashBusterType da belirtmekteyiz.
+                // enableTag biaze 
+                bundle.CreateJs("my-js-bundle","~/js/").WithEnvironmentOptions(BundleEnvironmentOptions.Create().ForDebug(
+                    builder=>builder.EnableCompositeProcessing()
+                    .EnableFileWatcher().SetCacheBusterType<AppDomainLifetimeCacheBuster>().CacheControlOptions(enableEtag:false,cacheControlMaxAge:0)).Build());
             });
 
             app.UseEndpoints(endpoints =>
